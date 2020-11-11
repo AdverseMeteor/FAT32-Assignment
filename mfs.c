@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016, 2017 Trevor Bakker 
+// Copyright (c) 2020 Trevor Bakker 
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,6 @@
 
 #define MAX_COMMAND_SIZE 255    // The maximum command-line size
 
-#define MAX_NUM_ARGUMENTS 5     // Mav shell only supports five arguments
 
 int main()
 {
@@ -85,7 +84,7 @@ int main()
     }
 
     // Now print the tokenized input as a debug check
-    // \TODO Remove this code and replace with your shell functionality
+    // \TODO Remove this code and replace with your FAT32 functionality
 
     int token_index  = 0;
     for( token_index = 0; token_index < token_count; token_index ++ ) 
