@@ -30,6 +30,8 @@
 #include <string.h>
 #include <signal.h>
 
+#define MAX_NUM_ARGUMENTS 3
+
 #define WHITESPACE " \t\n"      // We want to split our command line up into tokens
                                 // so we need to define what delimits our tokens.
                                 // In this case  white space
