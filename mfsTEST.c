@@ -78,7 +78,7 @@ int16_t NextLB(int32_t sector)
 
 int compare(char *userString, char *directoryString)
 {
-  char dotdot = "..";
+  const char* dotdot = "..";
 
   if(strncmp(dotdot,userString,2) == 0)
   {
