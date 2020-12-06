@@ -198,8 +198,8 @@ int cd( char *directoryName)
       return -1;
     }
 
-    return 0;
   }
+  return 0;
 }
 
 int statFile(char * fileName)
@@ -283,6 +283,7 @@ int getFile(char *originalFilename, char *newFilename)
       fclose(ofp);
     }
   }
+  return 0;
 }
 
 int readFile(char *filename, int requestedOffset, int requestedBytes)
