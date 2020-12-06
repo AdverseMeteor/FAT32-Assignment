@@ -191,13 +191,13 @@ int cd( char *directoryName)
       found = 1;
       break;
     }
-
-    if(!found)
-    {
-      printf("Error: Directory not found\n");
-    }
-
   }
+
+  if(!found)
+  {
+    printf("Error: Directory not found\n");
+  }
+  
   return -1;
 }
 
