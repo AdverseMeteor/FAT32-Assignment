@@ -61,7 +61,7 @@ int32_t  Dir;
 FILE *fp;
 int file_open=0;
 
-int32_t LABToOffset(int32_t sector)
+int32_t LBAToOffset(int32_t sector)
 {
   return ((sector - 2) * BPB_BytsPerSec) + (BPB_NumFATS * BPB_FATSz32 * BPB_BytsPerSec) + (BPB_RsvdSecCnt * BPB_BytsPerSec);
 }
@@ -295,7 +295,7 @@ int getFile(char *originalFilename, char *newFilename)
 
   if(newFilename == NULL)
   {
-    ofp = fopen(originalFilenam,"w");
+    ofp = fopen(originalFilename,"w");
     if(ofp == NULL)
     {
       perror("Error: ");
