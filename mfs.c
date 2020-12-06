@@ -197,11 +197,11 @@ int cd( char *directoryName)
       printf("Error: Directory not found\n");
     }
 
-    return -1;
   }
+  return -1;
 }
 
-int readFile(char *filename, requestedOffset, requestedBytes)
+int readFile(char *filename, int requestedOffset, int requestedBytes)
 {
   int i;
   int found = 0;
@@ -360,7 +360,7 @@ int statFile(char * fileName)
 {
   int i = 0;
   int found = 0;
-  for i=0;i<NUM_ENTRIES;i++)
+  for(i=0;i<NUM_ENTRIES;i++)
   {
     if(compare(fileName,dir[i].DIR_NAME))
     {
@@ -370,7 +370,7 @@ int statFile(char * fileName)
   }
   if(!found)
   {
-    printf("Error: File Not Found\n")
+    printf("Error: File Not Found\n");
   }
   return 0;
 }
