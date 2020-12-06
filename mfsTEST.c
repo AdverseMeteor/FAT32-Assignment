@@ -58,6 +58,9 @@ int8_t   BPB_NumFATS;
 int32_t  BPB_FATSz32;
 int32_t  Dir;
 
+FILE *fp;
+int file_open=0;
+
 int32_t LABToOffset(int32_t sector)
 {
   return ((sector - 2) * BPB_BytsPerSec) + (BPB_NumFATS * BPB_FATSz32 * BPB_BytsPerSec) + (BPB_RsvdSecCnt * BPB_BytsPerSec);
@@ -80,6 +83,10 @@ int compare(char *userString, char *directoryString)
   if(strncmp(dotdot,userString,2) == 0)
   {
       if(strncmp(userString, directoryString,2) == 0)
+      {
+          return 1;
+      }
+      return 0;
   }
 
   char IMG_Name[12];
@@ -92,7 +99,7 @@ int compare(char *userString, char *directoryString)
   strncpy(input,userString, strlen(userString));
 
   char expanded_name[12];
-  memset(expanded_name," ",12);
+  memset(expanded_name," ",12); //here
 
   char *token = strtok(input,".");
 
@@ -344,6 +351,8 @@ int getFile(char *originalFilename, char *newFilename)
       fclose(ofp);
     }
   }
+
+  return 0;
 }
 
 int statFile(char * fileName)
