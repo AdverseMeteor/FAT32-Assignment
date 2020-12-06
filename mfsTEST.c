@@ -167,6 +167,7 @@ int ls( )
   }
   return 0;
 }
+
 int cd( char *directoryName)
 {
   int i;
@@ -183,7 +184,7 @@ int cd( char *directoryName)
         cluster=2;
       }
 
-      intoffset = LBAToOffset(cluster);
+      int offset = LBAToOffset(cluster);
       fseek(fp,offset,SEEK_SET);
 
       fread(dir,sizeof(struct DirectoryEntry),NUM_ENTRIES,fp);
