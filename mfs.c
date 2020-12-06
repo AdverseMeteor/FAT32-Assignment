@@ -58,6 +58,21 @@ int8_t   BPB_NumFATS;
 int32_t  BPB_FATSz32;
 int32_t  Dir;
 
+int32_t LABToOffset(int32_t sector)
+{
+  return ((sector - 2) * BPB_BytsPerSec) + (BPB_NumFATS * BPB_FATSz32 * BPB_BytsPerSec) + (BPB_RsvdSecCnt * BPB_BytsPerSec);
+}
+
+int16_t NextLB(int32_t sector)
+{
+  uint32_t FATAddress = (BPB_BytsPerSec * BPB_RsvdSecCnt) + (sector * 4);
+  int16_t val;
+  fseek(fp,FATAddress,SEEK_SET);
+  fread(&val,2,1,fp);
+
+  return val;
+}
+
 int compare(char *userString, char *directoryString)
 {
   char *dotdot = "..";
