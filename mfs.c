@@ -39,7 +39,6 @@
 #define ATTR_DIRECTORY 0x10
 #define ATTR_ARCHIVE 0x20
 
-//struct for storing directory entry
 struct __attribute__((__packed__)) DirectoryEntry {
   char      DIR_NAME[11];
   uint8_t   DIR_Attr;
@@ -62,23 +61,24 @@ int32_t  Dir;
 FILE *fp;
 int file_open=0;
 
-int32_t LBAToOffset(int32_t sector)
+int32_t LABToOffset(int32_t sector)
 {
   return ((sector - 2) * BPB_BytsPerSec) + (BPB_NumFATS * BPB_FATSz32 * BPB_BytsPerSec) + (BPB_RsvdSecCnt * BPB_BytsPerSec);
 }
 
 int16_t NextLB(int32_t sector)
 {
-  uint32_t FATAddress = (BPB_BytsPerSec * BPB_RsvdSecCnt) * (sector * 4);
+  uint32_t FATAddress = (BPB_BytsPerSec * BPB_RsvdSecCnt) + (sector * 4);
   int16_t val;
-  fseek(fp, FATAddress, SEEK_SET);
-  fread(&val, 2, 1, fp);
+  fseek(fp,FATAddress,SEEK_SET);
+  fread(&val,2,1,fp);
+
   return val;
 }
 
 int compare(char *userString, char *directoryString)
 {
-  char dotdot = "..";
+  char *dotdot = "..";
 
   if(strncmp(dotdot,userString,2) == 0)
   {
@@ -99,13 +99,13 @@ int compare(char *userString, char *directoryString)
   strncpy(input,userString, strlen(userString));
 
   char expanded_name[12];
-  memset(expanded_name,' ',12);
+  memset(expanded_name," ",12); //here
 
   char *token = strtok(input,".");
 
   strncpy(expanded_name,token,strlen(token));
 
-  token = strtok(NULL,".");
+  token = strtok(NULL,".";)
   if(token)
   {
     strncpy((char*)(expanded_name+8),token,strlen(token));
@@ -114,7 +114,7 @@ int compare(char *userString, char *directoryString)
   expanded_name[11] = '\0';
 
   int i;
-  for(i = 0;i<11;i++)
+  for(int i = 0;I<11;i++)
   {
     expanded_name[i] = toupper(expanded_name[i]);
   }
@@ -151,7 +151,7 @@ int bpb()
 
 int ls( )
 {
-  int i;
+  int i
 
   for(i=0;i<NUM_ENTRIES;i++)
   {
@@ -195,98 +195,13 @@ int cd( char *directoryName)
     if(!found)
     {
       printf("Error: Directory not found\n");
-      return -1;
     }
 
+    return -1;
   }
-  return 0;
 }
 
-int statFile(char * fileName)
-{
-  int i = 0;
-  int found = 0;
-  for (i=0;i<NUM_ENTRIES;i++)
-  {
-    if(compare(fileName,dir[i].DIR_NAME))
-    {
-      printf("%s Attr: %d Size: %d Cluster: %d\n", fileName, dir[i].DIR_Attr,dir[1].DIR_FileSize, dir[i].DIR_FirstClusterLow);
-      found = 1;
-    }
-  }
-  if(!found)
-  {
-    printf("Error: File Not Found\n");
-  }
-  return 0;
-}
-
-int getFile(char *originalFilename, char *newFilename)
-{
-  FILE * ofp;
-
-  if(newFilename == NULL)
-  {
-    ofp = fopen(originalFilename,"w");
-    if(ofp == NULL)
-    {
-      perror("Error: ");
-    }
-  }
-  else
-  {
-    ofp = fopen(newFilename,"w");
-    if(ofp == NULL)
-    {
-      perror("Error: ");
-    }
-  }
-
-  int i;
-  int found = 0;
-
-
-  for(i=0;i<NUM_ENTRIES;i++)
-  {
-    if(compare(originalFilename,dir[i].DIR_NAME))
-    {
-      int cluster = dir[i].DIR_FirstClusterLow;
-
-      found = 1;
-      int bytesRemainingToRead = dir[i].DIR_FileSize;
-      int offset=0;
-      unsigned char buffer[512];
-
-      //Middle section of file
-      while(bytesRemainingToRead >= BPB_BytsPerSec)
-      {
-        offset = LBAToOffset(cluster);
-        fseek(fp,offset,SEEK_SET);
-        fread(buffer,1,BPB_BytsPerSec,fp);
-        fwrite(buffer,1,512,ofp);
-
-        cluster = NextLB(cluster);
-
-        bytesRemainingToRead = bytesRemainingToRead - BPB_BytsPerSec;
-      }
-
-      //last block
-      if(bytesRemainingToRead)
-      {
-        cluster = NextLB(cluster);
-        offset = LBAToOffset(cluster);
-        fseek(fp,offset,SEEK_SET);
-        fread(buffer,1,bytesRemainingToRead,fp);
-        fwrite(buffer,1,bytesRemainingToRead,ofp);
-      }
-
-      fclose(ofp);
-    }
-  }
-  return 0;
-}
-
-int readFile(char *filename, int requestedOffset, int requestedBytes)
+int readFile(char *filename, requestedOffset, requestedBytes)
 {
   int i;
   int found = 0;
@@ -311,7 +226,7 @@ int readFile(char *filename, int requestedOffset, int requestedBytes)
       while(searchSize>=BPB_BytsPerSec)
       {
         cluster = NextLB(cluster);
-        searchSize = searchSize - BPB_BytsPerSec;
+        searchSize = searchSize - BPB_BytsPerSec
       }
 
       //Read first block
@@ -319,13 +234,10 @@ int readFile(char *filename, int requestedOffset, int requestedBytes)
       int byteOffset = (requestedOffset % BPB_BytsPerSec);
       fseek(fp, offset+byteOffset, SEEK_SET);
 
-      int loopOffset = requestedOffset;
-
       unsigned char buffer[BPB_BytsPerSec];
 
       //First part
-      //figure out how many bytes in the first block we need to read
-      int firstBlockBytes = BPB_BytsPerSec-requestedOffset;
+      int firstBlockBytes = BPB_BytsPerSec-requestedBytes;
       fread(buffer,1,firstBlockBytes,fp);
 
       for(i=0;i<firstBlockBytes;i++)
@@ -377,8 +289,91 @@ int readFile(char *filename, int requestedOffset, int requestedBytes)
   return 0;
 }
 
+int getFile(char *originalFilename, char *newFilename)
+{
+  FILE * ofp;
+
+  if(newFilename == NULL)
+  {
+    ofp = fopen(originalFilenam,"w");
+    if(ofp == NULL)
+    {
+      perror("Error: ");
+    }
+  }
+  else
+  {
+    ofp = fopen(newFilename,"w");
+    if(ofp == NULL)
+    {
+      perror("Error: ");
+    }
+  }
+
+  int i;
+  int found = 0;
 
 
+  for(i=0;i<NUM_ENTRIES;i++)
+  {
+    if(compare(originalFilename,dir[i].DIR_NAME))
+    {
+      int cluster = dir[i].DIR_FirstClusterLow;
+
+      found = 1;
+
+      int bytesRemainingToRead = dir[i].DIR_FileSize;
+      int offset = 0;
+      unsigned char buffer[512];
+
+
+      //Middle section of file
+      while(bytesRemainingToRead >= BPB_BytsPerSec)
+      {
+        offset = LBAToOffset(cluster);
+        fseek(fp,offset,SEEK_SET);
+        fread(buffer,1,BPB_BytsPerSec,fp);
+        fwrite(buffer,1,512,ofp);
+
+        cluster = NextLB(cluster);
+
+        bytesRemainingToRead = bytesRemainingToRead - BPB_BytsPerSec;
+      }
+
+      //last block
+      if(bytesRemainingToRead)
+      {
+        offset = LBAToOffset(cluster);
+        fseek(fp,offset,SEEK_SET);
+        fread(buffer,1,bytesRemainingToRead,fp);
+        fwrite(buffer,1,bytesRemainingToRead,ofp);
+      }
+
+      fclose(ofp);
+    }
+  }
+
+  return 0;
+}
+
+int statFile(char * fileName)
+{
+  int i = 0;
+  int found = 0;
+  for i=0;i<NUM_ENTRIES;i++)
+  {
+    if(compare(fileName,dir[i].DIR_NAME))
+    {
+      printf("%s Attr: %d Size: %d Cluster: %d\n", fileName, dir[i].DIR_Attr,dir[1].DIR_FileSize, dir[i].DIR_FirstClusterLow);
+      found = 1;
+    }
+  }
+  if(!found)
+  {
+    printf("Error: File Not Found\n")
+  }
+  return 0;
+}
 
 int main()
 {
@@ -425,12 +420,21 @@ int main()
         token_count++;
     }
 
+    // Now print the tokenized input as a debug check
+    // \TODO Remove this code and replace with your FAT32 functionality
+
+    int token_index  = 0;
+    for( token_index = 0; token_index < token_count; token_index ++ )
+    {
+      printf("token[%d] = %s\n", token_index, token[token_index] );
+    }
+
     if(strcmp(token[0],"open")==0)
     {
       fp=fopen(token[1],"r");
       if(fp ==NULL)
       {
-        perror("Could not open file. ");
+        perror("Could not open file.");
       }
       else
       {
