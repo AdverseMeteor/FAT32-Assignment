@@ -424,12 +424,6 @@ int main()
         token_count++;
     }
 
-    int token_index  = 0;
-    for( token_index = 0; token_index < token_count; token_index ++ )
-    {
-      printf("token[%d] = %s\n", token_index, token[token_index] );
-    }
-
     if(strcmp(token[0],"open")==0)
     {
       fp=fopen(token[1],"r");
