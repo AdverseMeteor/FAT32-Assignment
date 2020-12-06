@@ -99,7 +99,7 @@ int compare(char *userString, char *directoryString)
   strncpy(input,userString, strlen(userString));
 
   char expanded_name[12];
-  memset(expanded_name," ",12);
+  memset(expanded_name,' ',12);
 
   char *token = strtok(input,".");
 
