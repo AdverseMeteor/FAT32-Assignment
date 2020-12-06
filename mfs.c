@@ -420,14 +420,6 @@ int main()
         token_count++;
     }
 
-    // Now print the tokenized input as a debug check
-    // \TODO Remove this code and replace with your FAT32 functionality
-
-    int token_index  = 0;
-    for( token_index = 0; token_index < token_count; token_index ++ )
-    {
-      printf("token[%d] = %s\n", token_index, token[token_index] );
-    }
 
     if(strcmp(token[0],"open")==0)
     {
