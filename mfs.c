@@ -140,11 +140,11 @@ int compare(char *userString, char *directoryString)
 int bpb()
 {
 
-  printf("BPB_BytsPerSec: %d 0x%x\n",BPB_BytsPerSec,BPB_BytsPerSec);
-  printf("BPB_SecPerClus: %d 0x%x\n",BPB_SecPerClus,BPB_SecPerClus);
-  printf("BPB_RsvdSecCnt: %d 0x%x\n",BPB_RsvdSecCnt,BPB_RsvdSecCnt);
-  printf("BPB_NumFATS: %d 0x%x\n",BPB_NumFATS,BPB_NumFATS);
-  printf("BPB_FATSz32: %d 0x%x\n",BPB_FATSz32,BPB_FATSz32);
+  printf("BPB_BytsPerSec: %d  0x%x\n",BPB_BytsPerSec,BPB_BytsPerSec);
+  printf("BPB_SecPerClus: %d  0x%x\n",BPB_SecPerClus,BPB_SecPerClus);
+  printf("BPB_RsvdSecCnt: %d  0x%x\n",BPB_RsvdSecCnt,BPB_RsvdSecCnt);
+  printf("BPB_NumFATS:    %d  0x%x\n",BPB_NumFATS,BPB_NumFATS);
+  printf("BPB_FATSz32:    %d  0x%x\n",BPB_FATSz32,BPB_FATSz32);
 
   return 0;
 }
@@ -188,6 +188,7 @@ int cd( char *directoryName)
       fseek(fp,offset,SEEK_SET);
 
       fread(dir,sizeof(struct DirectoryEntry),NUM_ENTRIES,fp);
+
       found = 1;
       break;
     }
@@ -197,7 +198,7 @@ int cd( char *directoryName)
   {
     printf("Error: Directory not found\n");
   }
-  
+
   return -1;
 }
 
