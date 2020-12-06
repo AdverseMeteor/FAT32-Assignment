@@ -99,13 +99,13 @@ int compare(char *userString, char *directoryString)
   strncpy(input,userString, strlen(userString));
 
   char expanded_name[12];
-  memset(expanded_name," ",12); //here
+  memset(expanded_name,' ',12); //here
 
   char *token = strtok(input,".");
 
   strncpy(expanded_name,token,strlen(token));
 
-  token = strtok(NULL,".";)
+  token = strtok(NULL,".");
   if(token)
   {
     strncpy((char*)(expanded_name+8),token,strlen(token));
@@ -114,7 +114,7 @@ int compare(char *userString, char *directoryString)
   expanded_name[11] = '\0';
 
   int i;
-  for(int i = 0;I<11;i++)
+  for(int i = 0;i<11;i++)
   {
     expanded_name[i] = toupper(expanded_name[i]);
   }
@@ -151,7 +151,7 @@ int bpb()
 
 int ls( )
 {
-  int i
+  int i;
 
   for(i=0;i<NUM_ENTRIES;i++)
   {
@@ -226,7 +226,7 @@ int readFile(char *filename, int requestedOffset, int requestedBytes)
       while(searchSize>=BPB_BytsPerSec)
       {
         cluster = NextLB(cluster);
-        searchSize = searchSize - BPB_BytsPerSec
+        searchSize = searchSize - BPB_BytsPerSec;
       }
 
       //Read first block
